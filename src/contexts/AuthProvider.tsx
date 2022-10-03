@@ -9,6 +9,7 @@ import { setSession } from '../utils/jwt';
 import { useAppSelector, useAppDispatch } from '../hooks/reduxHooks'
 import { setterAuth } from '../redux/slices/auth';
 import { AuthDto } from '../type/auth.Dto';
+import { setterProfile } from '../redux/slices/profile';
 
 type AuthProviderProps = {
   children: ReactNode;
@@ -20,14 +21,11 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
 
-    const handleRes = async () => {
-      const response = await axios.post(`/auth?info=info`, {
-        Email: auth.Email,
-        Password: auth.Password
-      });
-
-      const { user } = response.data;
-      console.log("#####" + user);
+    const handleRes = async (email: string) => {
+      const response =  axios.get(`profile?email=${email}`);
+      dispatch(setterProfile((await response).data));
+;      /* const { user } = response.data;
+      console.log("#####" + user); */
     }
 
     try {
@@ -39,7 +37,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
       if (accessToken && accessEmail && accessPassword) {
         setSession(accessToken, accessEmail, accessEmail);
         dispatch(setterAuth({ Email: accessEmail, Password: accessPassword }));
-        handleRes()
+        //handleRes(accessEmail);
 
       } else {
         //To-do Clear state when token expire

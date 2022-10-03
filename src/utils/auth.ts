@@ -5,13 +5,14 @@ import { setSession } from "./jwt";
 import { useAppSelector, useAppDispatch } from '../hooks/reduxHooks'
 import { setterAuth } from '../redux/slices/auth';
 
-const SignUpRes = async (body: AccessDto) => {
+const SignUpRes = async (body: AccessDto, onSUccess: ()=>void) => {
   //const dispatch = useAppDispatch()
   const signUp = await axiosInstance.post('/auth/sign-up', body);
   console.log('haha: ', signUp.data)
   if (signUp.data.code === 200) {
     console.log('login success');
     setSession(signUp.data.access_token, body.Email, body.Password);
+    onSUccess();
     //dispatch(setterAuth({ Email: body.Email, Password: body.Password }));
   } else {
     console.log('login fail ', signUp.data);
@@ -19,13 +20,14 @@ const SignUpRes = async (body: AccessDto) => {
   console.log('signIn: ', signUp.data.code);
 }
 
-const SignInRes = async (body: AccessDto) => {
+const SignInRes = async (body: AccessDto, onSuccess: () => void) => {
   //const dispatch = useAppDispatch()
   const signIn = await axiosInstance.post('/auth/sign-in', body);
 
   if (signIn.data.code === 200) {
     console.log('login success');
     setSession(signIn.data.access_token, body.Email, body.Password);
+    onSuccess();
     //dispatch(setterAuth({ Email: body.Email, Password: body.Password }));
   } else {
     console.log('login fail');

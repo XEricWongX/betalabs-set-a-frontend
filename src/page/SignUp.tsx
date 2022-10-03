@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { SignUpRes } from '../utils/auth';
+import { Navigate } from 'react-router-dom';
 
 function Copyright(props: any) {
   return (
@@ -30,6 +31,8 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const [success, setSuccess] = React.useState<boolean>(false);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -38,17 +41,22 @@ export default function SignUp() {
       password: data.get('password'),
     });
 
+    const handleSuccess = () => {
+      setSuccess(true);
+    }
+
     const body = {
       Email: data.get('email')?.toString() || '',
       Password: data.get('password')?.toString() || '',
     }
     console.log('sending request: ', body);
 
-    SignUpRes(body);
+    SignUpRes(body, handleSuccess);
   };
 
   return (
     <ThemeProvider theme={theme}>
+      {(success) ? <Navigate to="/" /> : <></>}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
