@@ -43,6 +43,7 @@ export default function SignIn() {
 
     const handleSuccess = () => {
       setSuccess(true);
+      console.log('sign in setSuccess')
     }
 
     const body = {

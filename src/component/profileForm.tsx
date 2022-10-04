@@ -26,6 +26,7 @@ type Props = {
   ProfilePicture: string;
   Company: string;
   onProfile: () => void;
+  onProfileObj: (obj: ProfileDto)=> void;
 }
 
 export default function ProfileForm(
@@ -35,10 +36,12 @@ export default function ProfileForm(
     Phone,
     ProfilePicture,
     Company,
-    onProfile
+    onProfile,
+    onProfileObj,
   }
     : Props
 ) {
+  console.log('thisis phone', Phone)
   const [checkFail, setCheck] = React.useState<boolean>(false);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,16 +51,18 @@ export default function ProfileForm(
       data.get('phone') &&
       data.get('company')
     ) {
+      let phoneStr: string =  data.get('phone')?.toString() || '';
+      let phone: number = +phoneStr;
       const profileObj: ProfileDto = {
         Email: data.get('email')?.toString() || '',
         Name: data.get('name')?.toString() || '',
-        Phone: data.get('phone'),
-        ProfilePicture: '',
+        Phone: phone,
+        ProfilePicture: 'https://www.google.com', //To-do add photo in firebase
         Company: data.get('company')?.toString() || '',
       }
 
       console.log('Sending request: ', JSON.stringify(profileObj))
-      UpdateProfile({body: profileObj ,onProfile: onProfile})/*  */
+      UpdateProfile({ body: profileObj, onProfile: onProfile, onProfileObj: onProfileObj })/*  */
     } else setCheck(true);
   };
 

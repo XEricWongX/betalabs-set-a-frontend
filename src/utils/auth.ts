@@ -5,14 +5,15 @@ import { setSession } from "./jwt";
 import { useAppSelector, useAppDispatch } from '../hooks/reduxHooks'
 import { setterAuth } from '../redux/slices/auth';
 
-const SignUpRes = async (body: AccessDto, onSUccess: ()=>void) => {
+const SignUpRes = async (body: AccessDto, onSuccess: ()=>void) => {
   //const dispatch = useAppDispatch()
   const signUp = await axiosInstance.post('/auth/sign-up', body);
-  console.log('haha: ', signUp.data)
+
+  console.log('signUp with: ', signUp.data);
   if (signUp.data.code === 200) {
-    console.log('login success');
+    console.log('signUp success');
     setSession(signUp.data.access_token, body.Email, body.Password);
-    onSUccess();
+    onSuccess();
     //dispatch(setterAuth({ Email: body.Email, Password: body.Password }));
   } else {
     console.log('login fail ', signUp.data);

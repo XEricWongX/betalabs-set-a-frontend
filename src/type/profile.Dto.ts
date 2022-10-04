@@ -1,7 +1,7 @@
 export type ProfileDto = {
     Email: string;
     Name: string;
-    Phone: number | FormDataEntryValue | null;
+    Phone: number;
     ProfilePicture: string;
     Company: string;
   }

@@ -48,10 +48,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
-  const logout = async () => {
-    setSession(null, '', '');
-  };
-
   return (
     <>
       {children}

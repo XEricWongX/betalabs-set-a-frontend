@@ -73,7 +73,7 @@ export default function ProfilePreview({
                 Name: {Name}
               </Grid>
               <Grid item xs={12}>
-                Phone: {Phone}
+                Phone: {(Phone === 0) ? '' : Phone}
               </Grid>
               <Grid item xs={12}>
                 Company: {Company}

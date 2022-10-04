@@ -1,12 +1,15 @@
 import { Box, Grid } from "@mui/material";
+import React from "react";
 import { Navigate } from "react-router-dom";
 import Friend from "../component/friend";
 import { Item } from "../component/item";
 import Profile from "../component/profile";
 import { useAppSelector } from '../hooks/reduxHooks'
+import { ProfileDto } from "../type/profile.Dto";
 
 const HomePage = () => {
   const email = useAppSelector((state) => state.auth.Email);
+
   return (
     <Box sx={{ padding: '40px' }}>
       {email === '' ? <Navigate to="/signin" /> : <></>}

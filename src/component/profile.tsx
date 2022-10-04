@@ -10,27 +10,51 @@ import ProfilePreview from "./profilePreview";
 
 const Profile = () => {
   const [profileBoolean, setProfileBoolean] = useState<boolean>(false);
-  const [profileObj, setProfileObj] = useState<ProfileDto>();
+  const [profileObj, setProfileObj] = useState<ProfileDto>(
+    {
+      Email: '',
+      Name: '',
+      Phone: 0,
+      ProfilePicture: '',
+      Company: '',
+    }
+  );
 
   const auth = useAppSelector(state => state.auth);
   const profile = useAppSelector(state => state.profile);
   const dispatch = useAppDispatch();
 
   const getProfile = GetProfile(auth.Email);
+  console.log('before: ', profileObj);
 
   useEffect(() => {
     const getProfile = async () => {
       const res = await axiosInstance.get(`/profile?email=${auth.Email}`);
-      console.log('abc haha: ', JSON.stringify(res.data))
+      console.log('abc haha: ', JSON.stringify(res.data.res));
+      setProfileObj(
+        {
+          Email: res.data.res.Email,
+          Name: res.data.res.Name,
+          Phone: res.data.res.Phone,
+          ProfilePicture: res.data.res.ProfilePicture,
+          Company: res.data.res.Company,
+        }
+      );
+      /* dispatch(setterProfile(res.data)); */
+      console.log('after: ', profileObj)
     }
     getProfile();
   }, [profile])
 
-  
+
   /* const profileObj = async () => {
     const profile = await axiosInstance.get(`/profile?email=${auth.Email}`);
     dispatch(setterProfile(profile.data))
   } */
+
+  const handleProfileObj = (obj: ProfileDto)=> {
+    setProfileObj(obj);
+  }
 
   const handleProfile = () => {
     setProfileBoolean(profileBoolean ? false : true);
@@ -45,21 +69,22 @@ const Profile = () => {
         <>
           <ProfileForm
             Email={auth.Email}
-            Name={profile.Name}
-            Phone={profile.Phone}
-            ProfilePicture={profile.ProfilePicture}
-            Company={profile.Company}
+            Name={profileObj.Name}
+            Phone={profileObj.Phone}
+            ProfilePicture={profileObj.ProfilePicture}
+            Company={profileObj.Company}
             onProfile={handleProfile}
+            onProfileObj={setProfileObj}
           />
         </>
         :
         <>
           <ProfilePreview
             Email={auth.Email}
-            Name={profile.Name}
-            Phone={profile.Phone}
-            ProfilePicture={profile.ProfilePicture}
-            Company={profile.Company}
+            Name={profileObj.Name}
+            Phone={profileObj.Phone}
+            ProfilePicture={profileObj.ProfilePicture}
+            Company={profileObj.Company}
             onProfile={handleProfile}
           />
         </>}

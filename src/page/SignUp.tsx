@@ -43,6 +43,7 @@ export default function SignUp() {
 
     const handleSuccess = () => {
       setSuccess(true);
+      console.log('set success')
     }
 
     const body = {
